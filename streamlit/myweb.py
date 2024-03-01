@@ -7,24 +7,50 @@ def set_background(image_url):
     <style>
     .stApp {{
         background-image: {image_url_str};
-        background-size: cover;
+        background-size: 100% 1000px;
     }}
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
 # เรียกใช้ฟังก์ชัน set_background() เพื่อกำหนดพื้นหลัง
-set_background("https://mir-s3-cdn-cf.behance.net/project_modules/disp/3651fa81381729.5cfe55542529a.jpg")
+set_background("https://png.pngtree.com/background/20210715/original/pngtree-white-simple-texture-background-picture-image_1323742.jpg")
+
+
 
 #Function to calculate BMI
 def calculate_bmi(weight, height):
     bmi = weight / (height/100)**2
     return bmi
+
+#Health and exercise advice
+def health_and_fitness_advice(age, gender, activity_level):
+    # แนะนำปริมาณการออกกำลังกายตามกลุ่มอายุและเพศ
+    if age < 18:
+        advice = "เด็กและวัยรุ่นควรออกกำลังกายอย่างสม่ำเสมออย่างน้อย 60 นาทีต่อวัน"
+    elif age >= 18 and age <= 64:
+        if gender == "ชาย":
+            advice = "ชายที่มีอายุระหว่าง 18-64 ปีควรออกกำลังกายอย่างสม่ำเสมออย่างน้อย 150 นาทีต่อสัปดาห์"
+        else:
+            advice = "หญิงที่มีอายุระหว่าง 18-64 ปีควรออกกำลังกายอย่างสม่ำเสมออย่างน้อย 150 นาทีต่อสัปดาห์"
+    else:
+        advice = "ผู้สูงอายุควรออกกำลังกายอย่างสม่ำเสมออย่างน้อย 150 นาทีต่อสัปดาห์"
+
+    # แนะนำระดับกิจกรรมทางกาย
+    if activity_level == "น้อย":
+        advice += "\nควรเพิ่มการออกกำลังกายอย่างน้อย 30 นาทีต่อวัน"
+    elif activity_level == "ปานกลาง":
+        advice += "\nควรเพิ่มการออกกำลังกายอย่างน้อย 60 นาทีต่อวัน"
+    else:
+        advice += "\nควรออกกำลังกายอย่างสม่ำเสมอ เช่น วิ่ง กระโดดเชือก หรือเดิน เป็นต้น"
+
+    return advice
+
 # Main
 def main():
     st.header('Body mask index(BMI)', divider='red')
     st.sidebar.subheader(":red[Menu]")
-    menu_option = st.sidebar.radio("Select Option :mag:", ["Home page", "Calculator"])
+    menu_option = st.sidebar.radio("Select Option :mag:", ["Home page", "Calculator","Health and exercise advice"])
 
     if menu_option == 'Calculator':
         image = Image.open('streamlit/BOdy mask index.jpg')
@@ -160,12 +186,12 @@ def main():
     elif menu_option == 'Home page':
          video_file = open('streamlit/BOdy mask index.mp4', 'rb')
          video_bytes = video_file.read()
-
          st.video(video_bytes)
+         
          st.write('''ดัชนีมวลกาย หรือ BMI ย่อมาจาก Body Mass Index เป็นค่าสากลที่ใช้เพื่อคำนวณเพื่อหาน้ำหนักตัวที่ควรจะเป็น และประมาณระดับไขมันในร่างกายโดยใช้น้ำหนักตัว และส่วนสูง
 การคำนวณดัชนีมวลกายไม่ใช่การวัดโดยตรงแต่ก็เป็นตัวชี้วัดไขมันในร่างกายที่ค่อนข้างเชื่อถือได้สำหรับคนส่วนใหญ่
 ค่า BMI สามารถใช้บ่งบอกความเสี่ยงในการเกิดโรคต่างๆได้อีกด้วย เช่น โรคเบาหวาน ความดันโลหิตสูง ไขมันในเลือด ระบบหัวใจ รวมไปถึงมะเร็งบางชนิด
-แต่อย่างไรก็ตามค่า BMI เป็นแค่การคำนวณเบื้องต้นเท่านั้น เนื่องจากคุณจำเป็นต้องนำปัจจัยอื่นๆ มาประกอบด้วย ทั้งเรื่องของพันธุกรรม ปริมาณกล้ามเนื้อ พฤติกรรมการกิน การใช้ชีวิต การออกกำลังกาย และอื่นๆ]
+แต่อย่างไรก็ตามค่า BMI เป็นแค่การคำนวณเบื้องต้นเท่านั้น เนื่องจากคุณจำเป็นต้องนำปัจจัยอื่นๆ มาประกอบด้วย ทั้งเรื่องของพันธุกรรม ปริมาณกล้ามเนื้อ พฤติกรรมการกิน การใช้ชีวิต การออกกำลังกาย และอื่นๆ
                  ''')
          st.header('ความเสี่ยงจากการมีดัชนีมวลกายสูง',divider='red')
          st.write('''ดัชนีมวลกายสูงมักแสดงถึงมวลกายที่เกินมาก ซึ่งอาจส่งผลให้เกิดภาวะเสี่ยงต่อโรคหรือปัญหาสุขภาพอื่น ๆ ได้ตามที่กล่าวมาข้างต้น เป็นพื้นที่ที่ต้องให้ความสำคัญกับการดูแลสุขภาพอย่างสม่ำเสมอ 
@@ -181,5 +207,25 @@ def main():
          st.write(':red[- ระมัดระวังกับการเพิ่มน้ำหนัก :] การเพิ่มน้ำหนักต้องเป็นอย่างระมัดระวังเพื่อไม่ให้เกินขีดจำกัดที่เป็นไปได้ เลือกกินอาหารที่มีประโยชน์และควบคุมสารอาหารอย่างเหมาะสม')
          st.image('https://static.thairath.co.th/media/dFQROr7oWzulq5Fa5K3y7TwF4LFOSrD9vTo84MxCkQHUoGKTRWfymL2xnMrEhaBDH9k.jpg')
          st.caption('Image credit URL:  https://static.thairath.co.th/media/dFQROr7oWzulq5Fa5K3y7TwF4LFOSrD9vTo84MxCkQHUoGKTRWfymL2xnMrEhaBDH9k.jpg')
+    #side bar Health and exercise advice
+    if menu_option == 'Health and exercise advice':
+        st.subheader(':rainbow[Health and exercise advice]')
+        st.image('https://t3.ftcdn.net/jpg/02/35/79/28/360_F_235792895_0SoLUsJ2PVOnjLWRtAqd6gLDuKJaDw93.jpg',width=600)
+        st.caption('Image credit URL: https://t3.ftcdn.net/jpg/02/35/79/28/360_F_235792895_0SoLUsJ2PVOnjLWRtAqd6gLDuKJaDw93.jpg')
+        age = st.number_input('ระบุอายุของคุณ')
+        gender = st.selectbox(
+            'ระบุเพศของคุณ',
+            ('ชาย', 'หญิง'), index=None, key='gender_select')
+        activity_level = st.selectbox(
+            'ระบุระดับกิจกรรมของคุณ',
+            ('น้อย', 'ปานกลาง', 'มาก'), index=None, key='activity_select')
+
+        if st.button('คำนวณ'):
+            advice = health_and_fitness_advice(age, gender, activity_level)
+
+            st.write(":red[คำแนะนำเกี่ยวกับสุขภาพและการออกกำลังกาย :]")
+            st.write(advice)
+
+
 if __name__ == "__main__":
     main()
